@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 13, 2023 at 11:29 AM
+-- Generation Time: Aug 13, 2023 at 12:24 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -96,6 +96,29 @@ INSERT INTO `fights` (`id`, `event_id`, `fight_no`, `date`, `meron_total_bet`, `
 (140, 52, 2, '2023-08-14', NULL, NULL, NULL, NULL, 'pending'),
 (141, 52, 3, '2023-08-14', NULL, NULL, NULL, NULL, 'pending');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `fullname` varchar(100) NOT NULL,
+  `level` enum('admin','cashier') NOT NULL,
+  `status` enum('active','inactive') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `fullname`, `level`, `status`) VALUES
+(1, 'tupe', '$2y$10$QdtqekJi7shTkhdnYPVuA.9WaNP4RhBfYh6NtlZRxRJh2Tnes/0vG', 'Christopher Panerio', '', 'active'),
+(2, 'Mimaw', '$2y$10$WnArFI7XHGxNTL.rNx3N3elkcF.5LiWy/elZ7jU9zeA5WxK4Gmisq', 'Mimaw Jabar', 'admin', 'active');
+
 --
 -- Indexes for dumped tables
 --
@@ -113,6 +136,12 @@ ALTER TABLE `fights`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -127,6 +156,12 @@ ALTER TABLE `events`
 --
 ALTER TABLE `fights`
   MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
