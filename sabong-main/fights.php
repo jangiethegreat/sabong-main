@@ -29,7 +29,7 @@
                 <!-- populate with PHP function call -->
                 <?php
                 include("fights_functions.php");
-                echo getFightsData();
+                echo getFightsData($event_id);
                 ?>
             </tbody>
         </table>
@@ -77,7 +77,7 @@
                     url: "fights_functions.php",
                     type: "POST",
                     data: {
-                        action: "fetch"
+                        action: "   "
                     },
                     success: function(response) {
                         $("#fightTable").html(response);

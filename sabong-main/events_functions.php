@@ -14,9 +14,26 @@ if (isset($_POST["action"]) && $_POST["action"] == "add") {
     $expected_event_fights = $_POST["expected_event_fights"];
     $event_status = "Open";
 
-    $sql = "INSERT INTO events (event_name, event_area, event_date, meron_position, wala_position, liamado_plasada, dehado_plasada, total_event_fights, expected_event_fights, event_status) VALUES ('$event_name', '$event_area', '$event_date', '$meron_position', '$wala_position', '$liamado_plasada', '$dehado_plasada', $total_event_fights, '$expected_event_fights', '$event_status')";
+
+    $sql = "INSERT INTO events (event_name, event_area, event_date, meron_position, wala_position, liamado_plasada, dehado_plasada, total_event_fights, expected_event_fights, event_status) 
+            VALUES ('$event_name', '$event_area', '$event_date', '$meron_position', '$wala_position', '$liamado_plasada', '$dehado_plasada', $total_event_fights, '$expected_event_fights', '$event_status')";
 
     if ($conn->query($sql) === TRUE) {
+        // Get the ID of the newly added event
+        $event_id = $conn->insert_id;
+
+        // Create the corresponding records in the fights table
+        for ($i = 1; $i <= $expected_event_fights; $i++) {
+            $fight_date = $event_date; // Assuming all fights happen on the same date as the event date
+
+            // Insert the fight data into the fights table
+            $fight_sql = "INSERT INTO fights (event_id, fight_no, date,status) VALUES ('$event_id', '$i', '$fight_date','pending')";
+            if (!$conn->query($fight_sql)) {
+                echo "Error creating fight record: " . $conn->error;
+                exit;
+            }
+        }
+
         echo "Event added successfully";
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
@@ -57,7 +74,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "fetch") {
                         <button class='btn btn-primary editBtn' data-id='" . $row["id"] . "'>Edit</button>
                         <button class='btn btn-danger deleteBtn' data-id='" . $row["id"] . "'>Delete</button>
                         <button class='btn btn-success changeStatusBtn " . $buttonColorClass . "' data-id='" . $row["id"] . "' data-status='" . $row["event_status"] . "'>" . $buttonText . "</button>
-                    
+                        <a href='fights.php?event_id=" . $row["id"] . "' class='btn btn-primary'>View Fights</a>
                     </td>
                 </tr>
             ";
@@ -86,7 +103,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "fetch_single") {
 }
 
 // Edit event function
-if (isset($_POST["action"]) && $_POST["action"] == "add") {
+if (isset($_POST["action"]) && $_POST["action"] == "edit") {
     $event_name = $_POST["event_name"];
     $event_area = $_POST["event_area"];
     $event_date = $_POST["event_date"];
@@ -97,30 +114,6 @@ if (isset($_POST["action"]) && $_POST["action"] == "add") {
     $total_event_fights = 0; // We will set this value to 0 initially
     $expected_event_fights = $_POST["expected_event_fights"];
     $event_status = "Open";
-
-    $sql = "INSERT INTO events (event_name, event_area, event_date, meron_position, wala_position, liamado_plasada, dehado_plasada, total_event_fights, expected_event_fights, event_status) 
-            VALUES ('$event_name', '$event_area', '$event_date', '$meron_position', '$wala_position', '$liamado_plasada', '$dehado_plasada', $total_event_fights, '$expected_event_fights', '$event_status')";
-
-    if ($conn->query($sql) === TRUE) {
-        // Get the ID of the newly added event
-        $event_id = $conn->insert_id;
-
-        // Create the corresponding records in the fights table
-        for ($i = 1; $i <= $expected_event_fights; $i++) {
-            $fight_date = $event_date; // Assuming all fights happen on the same date as the event date
-
-            // Insert the fight data into the fights table
-            $fight_sql = "INSERT INTO fights (event_id, fight_no, date,status) VALUES ('$event_id', '$i', '$fight_date','pending')";
-            if (!$conn->query($fight_sql)) {
-                echo "Error creating fight record: " . $conn->error;
-                exit;
-            }
-        }
-
-        echo "Event added successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
 }
 
 // Delete event function

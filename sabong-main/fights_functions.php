@@ -3,7 +3,7 @@ include("dbcon.php");
 
 // Function to get fights data
 // Function to get fights data
-function getFightsData()
+function getFightsData($event_id)
 {
     global $conn;
     $data = '';
@@ -12,7 +12,9 @@ function getFightsData()
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "SELECT * FROM fights WHERE status = 'pending'";
+    $event_id = $_GET['event_id']; // Assuming the event ID is passed as a query parameter
+
+    $sql = "SELECT * FROM fights WHERE event_id = '$event_id'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {

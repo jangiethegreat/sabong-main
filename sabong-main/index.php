@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
     <title>Arena Events</title>
@@ -10,6 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 
 </head>
+
 <body>
     <div class="container">
         <h2>Arena Events</h2>
@@ -131,7 +133,7 @@
                     <div class="modal-body">
                         <!-- Edit Event form fields -->
                         <input type="hidden" name="event_id" id="event_id">
-                        
+
                         <div class="form-group">
                             <label>Event Name</label>
                             <input type="text" name="event_name" id="event_name" class="form-control" required>
@@ -232,7 +234,9 @@
                 $.ajax({
                     url: "events_functions.php",
                     type: "POST",
-                    data: { action: "fetch" },
+                    data: {
+                        action: "fetch"
+                    },
                     success: function(response) {
                         $("#eventTable").html(response);
                     }
@@ -261,7 +265,10 @@
                 $.ajax({
                     url: "events_functions.php",
                     type: "POST",
-                    data: { action: "fetch_single", event_id: event_id },
+                    data: {
+                        action: "fetch_single",
+                        event_id: event_id
+                    },
                     success: function(response) {
                         var data = JSON.parse(response);
                         $("#event_id").val(data.id); //id field
@@ -291,7 +298,7 @@
                 $.ajax({
                     url: "events_functions.php",
                     type: "POST",
-                    data: formData + "&action=edit", 
+                    data: formData + "&action=edit",
                     success: function(response) {
                         console.log(response);
                         $("#editModal").modal("hide");
@@ -362,9 +369,8 @@
 
 
         });
-
-
     </script>
 
 </body>
+
 </html>
